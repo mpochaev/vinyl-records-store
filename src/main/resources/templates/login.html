@@ -1,0 +1,28 @@
+<!-- login.html -->
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head><meta charset="UTF-8"><title>Войти</title></head>
+<body>
+<th:block th:replace="~{fragments/nav :: navBar}"></th:block>
+
+<h2>Вход в аккаунт</h2>
+<div th:if="${param.error}" style="color:red;">Неверный логин или пароль</div>
+<div th:if="${param.logout}" style="color:green;">Вы вышли из аккаунта</div>
+<div th:if="${param.register}" style="color:green;">Регистрация успешна! Введите ваши данные для входа.</div>
+
+<form th:action="@{/login}" method="post">
+    <p>
+        <label for="username">Логин или Email:</label><br/>
+        <input type="text" id="username" name="username" />
+    </p>
+    <p>
+        <label for="password">Пароль:</label><br/>
+        <input type="password" id="password" name="password" />
+    </p>
+    <p>
+        <input type="checkbox" id="rememberMe" name="remember-me" />
+        <label for="rememberMe">Запомнить меня</label>
+    </p>
+    <button type="submit">Войти</button>
+</form>
+</body>
+</html>

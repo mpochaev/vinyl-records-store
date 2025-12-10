@@ -1,0 +1,67 @@
+<!-- catalog.html -->
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head><meta charset="UTF-8"><title>Каталог пластинок</title></head>
+<body>
+<th:block th:replace="~{fragments/nav :: navBar}"></th:block>
+
+<h2>Каталог пластинок</h2>
+<!-- Search Filter Form -->
+<form th:action="@{/catalog}" method="get">
+    <label>Название альбома: <input type="text" name="title" th:value="${titleFilter}" /></label>
+    <label>Исполнитель: <input type="text" name="artist" th:value="${artistFilter}" /></label>
+    <label>Жанр:
+        <select name="genre">
+            <option value="" th:selected="${selectedGenre} == null">Все жанры</option>
+            <option th:each="g : ${genres}" th:value="${g}" th:text="${g}"
+                    th:selected="${g} == ${selectedGenre}">Genre</option>
+        </select>
+    </label>
+    <label>Цена от: <input type="number" step="0.01" name="minPrice" th:value="${minPriceFilter}" /></label>
+    <label>до: <input type="number" step="0.01" name="maxPrice" th:value="${maxPriceFilter}" /></label>
+    <button type="submit">Поиск</button>
+</form>
+
+<!-- Results -->
+<table>
+    <thead>
+    <tr><th></th><th>Альбом</th><th>Исполнитель</th><th>Жанр</th><th>Цена</th><th>Наличие</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="vinyl : ${vinyls}">
+        <td>
+            <!-- Thumbnail or placeholder -->
+            <span th:if="${vinyl.photo == null or vinyl.photo.isEmpty()}">
+                <img th:src="@{/img/placeholder.png}" alt="No image" width="50"/>
+                    </span>
+                <span th:if="${vinyl.photo != null and !vinyl.photo.isEmpty()}">
+                <img th:src="@{/img/{file}(file=${vinyl.photo})}" alt="Фото" width="50"/>
+                    </span>
+
+        </td>
+        <td>
+            <a th:href="@{'/vinyl/' + ${vinyl.id}}"><span th:text="${vinyl.title}">Название</span></a>
+        </td>
+        <td th:text="${vinyl.artist}">Исполнитель</td>
+        <td th:text="${vinyl.genre}">Жанр</td>
+        <td th:text="${#numbers.formatDecimal(vinyl.price, 2, 2)}">0.00</td>
+        <td>
+            <span th:if="${vinyl.quantity > 0}" style="color:green;">В наличии (${vinyl.quantity})</span>
+            <span th:if="${vinyl.quantity == 0}" style="color:red;">Нет в наличии</span>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(vinyls)}"><td colspan="6">Ничего не найдено.</td></tr>
+    </tbody>
+</table>
+
+<!-- Pagination controls -->
+<div>
+    Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>.
+    <span th:if="${currentPage > 0}">
+      <a th:href="@{/catalog(title=${titleFilter}, artist=${artistFilter}, genre=${selectedGenre}, minPrice=${minPriceFilter}, maxPrice=${maxPriceFilter}, page=${currentPage - 1})}">« Назад</a>
+    </span>
+    <span th:if="${currentPage + 1 < totalPages}">
+      <a th:href="@{/catalog(title=${titleFilter}, artist=${artistFilter}, genre=${selectedGenre}, minPrice=${minPriceFilter}, maxPrice=${maxPriceFilter}, page=${currentPage + 1})}">Вперед »</a>
+    </span>
+</div>
+</body>
+</html>

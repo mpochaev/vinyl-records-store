@@ -1,0 +1,37 @@
+<!-- admin/customers.html -->
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head><meta charset="UTF-8"><title>Покупатели (Админ)</title></head>
+<body>
+<th:block th:replace="~{fragments/nav :: navBar}"></th:block>
+<h2>Покупатели</h2>
+<table>
+    <thead>
+    <tr><th>ID</th><th>Логин</th><th>Email</th><th>Действие</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${customers}">
+        <td th:text="${user.id}">0</td>
+        <td th:text="${user.login}">login</td>
+        <td th:text="${user.email}">email</td>
+        <td>
+            <form th:action="@{'/admin/customers/' + ${user.id}}"
+                  method="post" style="display:inline;">
+                <input type="hidden" name="page" th:value="${currentPage}" />
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(customers)}"><td colspan="4">Нет покупателей.</td></tr>
+    </tbody>
+</table>
+<div>
+    Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>.
+    <span th:if="${currentPage > 0}">
+      <a th:href="@{'/admin/customers?(page=' + ${currentPage - 1} + ')'}">« Назад</a>
+    </span>
+    <span th:if="${currentPage + 1 < totalPages}">
+      <a th:href="@{'/admin/customers?(page=' + ${currentPage + 1} + ')'}">Вперед »</a>
+    </span>
+</div>
+</body>
+</html>

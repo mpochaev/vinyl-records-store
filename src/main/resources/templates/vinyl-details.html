@@ -1,0 +1,25 @@
+<!-- vinyl-details.html -->
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head><meta charset="UTF-8"><title>Детали пластинки</title></head>
+<body>
+<th:block th:replace="~{fragments/nav :: navBar}"></th:block>
+
+<h2 th:text="${vinyl.title} + ' — ' + ${vinyl.artist}">Альбом – Исполнитель</h2>
+<div>
+    <p><b>Жанр:</b> <span th:text="${vinyl.genre}">Genre</span></p>
+    <p><b>Дата выхода:</b> <span th:text="${#temporals.format(vinyl.releaseDate, 'dd.MM.yyyy')}">01.01.2000</span></p>
+    <p><b>Описание:</b> <span th:text="${vinyl.description}">Описание</span></p>
+    <p><b>Цена:</b> <span th:text="${#numbers.formatDecimal(vinyl.price, 2, 2)}">0.00</span> ₽</p>
+    <p>
+        <b>Наличие:</b>
+        <span th:if="${vinyl.quantity > 0}" style="color:green;">есть (шт: <span th:text="${vinyl.quantity}">0</span>)</span>
+        <span th:if="${vinyl.quantity == 0}" style="color:red;">нет в наличии</span>
+    </p>
+</div>
+<div>
+    <form th:action="@{'/order/' + ${vinyl.id}}" method="post">
+        <button type="submit" th:disabled="${vinyl.quantity == 0}">Оформить заказ</button>
+    </form>
+</div>
+</body>
+</html>

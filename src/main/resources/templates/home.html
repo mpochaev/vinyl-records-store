@@ -1,0 +1,26 @@
+<!-- home.html -->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ru">
+<head><meta charset="UTF-8"><title>Vinyl Store Home</title></head>
+<body>
+<th:block th:replace="~{fragments/nav :: navBar}"></th:block>
+
+<h1>
+    <span sec:authorize="isAuthenticated()" th:text="${username + ', '}"></span>
+    добро пожаловать в магазин виниловых пластинок!
+</h1>
+
+<div>
+    <h3>Топ-10 самых продаваемых пластинок:</h3>
+    <ol>
+        <li th:each="v : ${topVinyls}">
+            <a th:href="@{'/vinyl/' + ${v.id}}">
+                <span th:text="${v.title}">Альбом</span> – <span th:text="${v.artist}">Исполнитель</span>
+            </a>
+        </li>
+        <li th:if="${#lists.isEmpty(topVinyls)}">Нет данных.</li>
+    </ol>
+</div>
+</body>
+</html>

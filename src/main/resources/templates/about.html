@@ -1,0 +1,17 @@
+<!-- about.html -->
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>О нас</title>
+</head>
+<body>
+<th:block th:replace="~{fragments/nav :: navBar}"></th:block>
+
+<h2>О магазине</h2>
+<p>
+    Мы самый лучший магазин виниловых пластинок!
+</p>
+
+<p><a th:href="@{/}">На главную</a></p>
+</body>
+</html>

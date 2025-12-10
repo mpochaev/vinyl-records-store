@@ -1,0 +1,36 @@
+<!-- account.html -->
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head><meta charset="UTF-8"><title>Мой аккаунт</title></head>
+<body>
+<th:block th:replace="~{fragments/nav :: navBar}"></th:block>
+
+<h2>Личный кабинет</h2>
+<p><b>Логин:</b> <span th:text="${user.login}">username</span></p>
+<p><b>Email:</b> <span th:text="${user.email}">user@example.com</span></p>
+
+<h3>Мои заказы:</h3>
+<table>
+    <thead>
+    <tr><th>Альбом</th><th>Исполнитель</th><th>Цена</th><th>Дата</th><th>Статус</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+        <td>
+            <a th:href="@{'/vinyl/' + ${order.vinyl.id}}"><span th:text="${order.vinyl.title}">Album</span></a>
+        </td>
+        <td th:text="${order.vinyl.artist}">Artist</td>
+        <td th:text="${#numbers.formatDecimal(order.totalPrice, 2, 2)}">0.00</td>
+        <td th:text="${#temporals.format(order.orderDate, 'dd.MM.yyyy')}">01.01.2025</td>
+        <td>
+        <span th:switch="${order.status.name()}">
+            <span th:case="'PLACED'">Оформлен</span>
+            <span th:case="'PURCHASED'" style="color:green;">Куплен</span>
+            <span th:case="'CANCELLED'" style="color:red;">Отменен</span>
+        </span>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(orders)}"><td colspan="5">Вы еще не делали заказов.</td></tr>
+    </tbody>
+</table>
+</body>
+</html>

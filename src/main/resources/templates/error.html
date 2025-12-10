@@ -1,0 +1,12 @@
+<!-- error.html -->
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head><meta charset="UTF-8"><title>Ошибка</title></head>
+<body>
+<th:block th:replace="~{fragments/nav :: navBar}"></th:block>
+<h2>Произошла ошибка</h2>
+<p th:text="${errorMessage != null ? errorMessage : 'Извините, произошла непредвиденная ошибка.'}">
+    Извините, произошла непредвиденная ошибка.
+</p>
+<p><a th:href="@{/}">На главную</a></p>
+</body>
+</html>
