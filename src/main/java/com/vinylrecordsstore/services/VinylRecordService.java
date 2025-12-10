@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -34,7 +35,11 @@ public class VinylRecordService {
                                           BigDecimal maxPrice,
                                           int page) {
 
-        PageRequest pageable = PageRequest.of(page, 10);
+        PageRequest pageable = PageRequest.of(
+                page,
+                10,
+                Sort.by(Sort.Direction.DESC, "lastSupplyDate")
+        );
         String normalizedTitle = (title == null || title.isBlank()) ? "" : title;
         String normalizedArtist = (artist == null || artist.isBlank()) ? "" : artist;
         return vinylRecordRepository.searchVinyls(normalizedTitle, normalizedArtist, genre, minPrice, maxPrice, pageable);
@@ -42,7 +47,13 @@ public class VinylRecordService {
 
     @Transactional(readOnly = true)
     public Page<VinylRecord> getAllVinyls(int page) {
-        return vinylRecordRepository.findAll(PageRequest.of(page, 10));
+        return vinylRecordRepository.findAll(
+                PageRequest.of(
+                        page,
+                        10,
+                        Sort.by(Sort.Direction.DESC, "lastSupplyDate") // Сначала свежие поставки
+                )
+        );
     }
 
     @Transactional(readOnly = true)

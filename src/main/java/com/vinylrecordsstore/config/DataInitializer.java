@@ -63,7 +63,7 @@ public class DataInitializer implements CommandLineRunner {
             User u = new User();
             u.setLogin("user" + i);
             u.setEmail("user" + i + "@example.com");
-            u.setPassword(passwordEncoder.encode("user" + i));  // password same as login
+            u.setPassword(passwordEncoder.encode("user" + i));
             u.setRole(Role.USER);
             users.add(u);
         }
@@ -98,7 +98,7 @@ public class DataInitializer implements CommandLineRunner {
         vinylRecords.add(new VinylRecord(null, "25", "Adele", Genre.ELECTRONIC, LocalDate.of(1959, 8, 9), "ELECTRONIC music album by Adele, released in 1959.", new BigDecimal("30.49"), 8, null, "album25.png"));
         vinylRecords.add(new VinylRecord(null, "Symphony No. 9", "Beethoven", Genre.JAZZ, LocalDate.of(1993, 3, 16), "JAZZ music album by Beethoven, released in 1993.", new BigDecimal("19.35"), 13, null, "album26.jpg"));
         vinylRecords.add(new VinylRecord(null, "30", "Adele", Genre.BLUES, LocalDate.of(1996, 12, 7), "BLUES music album by Adele, released in 1996.", new BigDecimal("12.38"), 19, null, "album27.png"));
-        vinylRecords.add(new VinylRecord(null, "Live at the Royal Albert Hall", "Adele", Genre.FUNK, LocalDate.of(1951, 11, 23), "FUNK music album by Adele, released in 1951.", new BigDecimal("7.35"), 5, null, "album28.jpg"));
+        vinylRecords.add(new VinylRecord(null, "Live at the Royal Albert Hall", "Adele", Genre.FUNK, LocalDate.of(1951, 11, 23), "FUNK music album by Adele, released in 1951.", new BigDecimal("7.35"), 5, null, "album28.png"));
         vinylRecords.add(new VinylRecord(null, "Piano Concerto No. 21", "Mozart", Genre.JAZZ, LocalDate.of(1970, 4, 7), "JAZZ music album by Mozart, released in 1970.", new BigDecimal("26.91"), 8, null, "album29.jpg"));
         vinylRecords.add(new VinylRecord(null, "Moonlight Sonata", "Beethoven", Genre.ELECTRONIC, LocalDate.of(2017, 9, 28), "ELECTRONIC music album by Beethoven, released in 2017.", new BigDecimal("37.66"), 18, null, "album30.jpg"));
         vinylRecords.add(new VinylRecord(null, "Wish You Were Here", "Pink Floyd", Genre.CLASSICAL, LocalDate.of(2017, 2, 5), "CLASSICAL music album by Pink Floyd, released in 2017.", new BigDecimal("44.85"), 8, null, "album31.png"));

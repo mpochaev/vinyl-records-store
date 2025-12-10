@@ -1,6 +1,9 @@
 <!-- admin/orders.html -->
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head><meta charset="UTF-8"><title>История заказов (Админ)</title></head>
+<head>
+    <meta charset="UTF-8"><title>История заказов (Админ)</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
 <th:block th:replace="~{fragments/nav :: navBar}"></th:block>
 <h2>История заказов</h2>
@@ -28,16 +31,34 @@
           </span>
         </td>
         <td>
+            <!-- Отметить как оплаченное -->
             <form th:if="${order.status == T(com.vinylrecordsstore.enums.OrderStatus).PLACED}"
                   th:action="@{'/admin/orders/' + ${order.id} + '/mark'}"
                   method="post" style="display:inline;">
+
+                <!-- CSRF -->
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}" />
+
+                <!-- номер страницы, чтобы не сбивалась пагинация -->
                 <input type="hidden" name="page" th:value="${currentPage}" />
+
                 <button type="submit" title="Отметить как оплаченное">&#10004;</button>
             </form>
+
+            <!-- Удалить заказ -->
             <form th:action="@{'/admin/orders/' + ${order.id}}"
                   method="post" style="display:inline;">
-                <input type="hidden" name="_method" value="delete"/>
+
+                <!-- CSRF -->
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}" />
+
+                <!-- номер страницы -->
                 <input type="hidden" name="page" th:value="${currentPage}" />
+
                 <button type="submit">Удалить</button>
             </form>
         </td>
@@ -48,10 +69,10 @@
 <div>
     Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>.
     <span th:if="${currentPage > 0}">
-      <a th:href="@{'/admin/orders?(page=' + ${currentPage - 1} + ')'}">« Назад</a>
+      <a th:href="@{'/admin/orders?page=' + ${currentPage - 1}}">« Назад</a>
     </span>
     <span th:if="${currentPage + 1 < totalPages}">
-      <a th:href="@{'/admin/orders?(page=' + ${currentPage + 1} + ')'}">Вперед »</a>
+      <a th:href="@{'/admin/orders?page=' + ${currentPage + 1}}">Вперед »</a>
     </span>
 </div>
 </body>

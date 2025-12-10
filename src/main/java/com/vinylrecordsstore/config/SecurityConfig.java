@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+// Активирует поддержку Spring Security
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -51,12 +52,10 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /**
-     * UserDetailsService – Spring Security будет через него искать пользователя по логину/почте.
-     */
+     // Через него Spring Security будет искать пользователя по логину/почте
     @Bean
     public UserDetailsService userDetailsService() {
-        // метод в UserService, который возвращает UserDetails по логину/почте
+        // Метод в UserService, который возвращает UserDetails по логину/почте
         return userService::getUserByLoginOrEmail;
     }
 }

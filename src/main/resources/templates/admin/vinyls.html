@@ -1,6 +1,9 @@
 <!-- admin/vinyls.html -->
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head><meta charset="UTF-8"><title>Пластинки (Админ)</title></head>
+<head>
+    <meta charset="UTF-8"><title>Пластинки (Админ)</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
 <th:block th:replace="~{fragments/nav :: navBar}"></th:block>
 <h2>Пластинки</h2>
@@ -15,20 +18,23 @@
     <tbody>
     <tr th:each="vinyl : ${vinyls}">
         <td>
-          <span th:if="${vinyl.photo == null or vinyl.photo.isEmpty()}">
-            <img src="/img/placeholder.png"
-                 alt="No image"
-                 style="width: 40px; height: auto;"/>
-          </span>
-            <span th:if="${vinyl.photo != null and !vinyl.photo.isEmpty()}">
-            <img th:src="@{/img/{file}(file=${vinyl.photo})}" alt="Фото" width="40"/>
-          </span>
+            <!-- если фото нет или пустая строка -->
+            <img th:if="${#strings.isEmpty(vinyl.photo)}"
+                 src="/img/placeholder.png"
+                 alt="Фото"
+                 width="40px"/>
+
+            <!-- если фото есть -->
+            <img th:if="${!#strings.isEmpty(vinyl.photo)}"
+                 th:src="@{/img/{file}(file=${vinyl.photo})}"
+                 alt="Фото"
+                 width="40px"/>
         </td>
         <td th:text="${vinyl.id}">0</td>
         <td th:text="${vinyl.title}">Название</td>
         <td th:text="${vinyl.artist}">Исполнитель</td>
         <td th:text="${vinyl.genre}">Жанр</td>
-        <td th:text="${#temporals.format(vinyl.releaseDate, 'dd.MM.yyyy')}">01.01.2000</td>
+        <td th:text="${#temporals.format(vinyl.releaseDate, 'dd.MM.yyyy')}">Дата</td>
         <td th:text="${#numbers.formatDecimal(vinyl.price, 2, 2)}">0.00</td>
         <td th:text="${vinyl.quantity}">0</td>
         <td th:text="${#temporals.format(vinyl.lastSupplyDate, 'dd.MM.yyyy HH:mm')}">01.01.2025 00:00</td>
@@ -40,10 +46,10 @@
 <div>
     Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span>.
     <span th:if="${currentPage > 0}">
-      <a th:href="@{'/admin/vinyls?(page=' + ${currentPage - 1} + ')'}">« Назад</a>
+      <a th:href="@{'/admin/vinyls?page=' + ${currentPage - 1}}">« Назад</a>
     </span>
     <span th:if="${currentPage + 1 < totalPages}">
-      <a th:href="@{'/admin/vinyls?(page=' + ${currentPage + 1} + ')'}">Вперед »</a>
+      <a th:href="@{'/admin/vinyls?page=' + ${currentPage + 1}}">Вперед »</a>
     </span>
 </div>
 </body>

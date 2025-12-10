@@ -1,6 +1,9 @@
 <!-- catalog.html -->
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head><meta charset="UTF-8"><title>Каталог пластинок</title></head>
+<head>
+    <meta charset="UTF-8"><title>Каталог пластинок</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
 <th:block th:replace="~{fragments/nav :: navBar}"></th:block>
 
@@ -45,7 +48,11 @@
         <td th:text="${vinyl.genre}">Жанр</td>
         <td th:text="${#numbers.formatDecimal(vinyl.price, 2, 2)}">0.00</td>
         <td>
-            <span th:if="${vinyl.quantity > 0}" style="color:green;">В наличии (${vinyl.quantity})</span>
+            <span th:if="${vinyl.quantity > 0}"
+                  style="color:green;"
+                  th:text="'В наличии (' + ${vinyl.quantity} + ')'">
+                    В наличии (0)
+            </span>
             <span th:if="${vinyl.quantity == 0}" style="color:red;">Нет в наличии</span>
         </td>
     </tr>

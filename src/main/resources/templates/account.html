@@ -1,8 +1,13 @@
 <!-- account.html -->
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head><meta charset="UTF-8"><title>Мой аккаунт</title></head>
+<head>
+    <meta charset="UTF-8"><title>Мой аккаунт</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
 <th:block th:replace="~{fragments/nav :: navBar}"></th:block>
+
+<img src="/img/avatar.png" alt="Аватар" class="avatar"/>
 
 <h2>Личный кабинет</h2>
 <p><b>Логин:</b> <span th:text="${user.login}">username</span></p>

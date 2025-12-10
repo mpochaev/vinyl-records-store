@@ -1,6 +1,9 @@
 <!-- order-success.html -->
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head><meta charset="UTF-8"><title>Заказ оформлен</title></head>
+<head>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta charset="UTF-8"><title>Заказ оформлен</title>
+</head>
 <body>
 <th:block th:replace="~{fragments/nav :: navBar}"></th:block>
 <h2>Спасибо за заказ!</h2>

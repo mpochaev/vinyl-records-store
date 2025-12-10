@@ -4,6 +4,7 @@ import com.vinylrecordsstore.entities.Order;
 import com.vinylrecordsstore.entities.User;
 import com.vinylrecordsstore.entities.VinylRecord;
 import com.vinylrecordsstore.enums.OrderStatus;
+import com.vinylrecordsstore.exceptions.NotFoundException;
 import com.vinylrecordsstore.repositories.OrderRepository;
 import com.vinylrecordsstore.repositories.VinylRecordRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -31,7 +33,7 @@ public class OrderService {
      * Оформление заказа пользователем
      */
     @Transactional
-    @CacheEvict(value = "topVinyls", allEntries = true)
+    @CacheEvict(value = "ordersByUser", key = "#user.id")
     public void placeOrder(User user, VinylRecord vinyl) {
         if (vinyl.getQuantity() <= 0) {
             throw new RuntimeException("Товара нет в наличии");
@@ -58,7 +60,13 @@ public class OrderService {
      */
     @Transactional(readOnly = true)
     public Page<Order> getAllOrders(int page) {
-        return orderRepository.findAll(PageRequest.of(page, 10));
+        return orderRepository.findAll(
+                PageRequest.of(
+                        page,
+                        10,
+                        Sort.by(Sort.Direction.DESC, "orderDate")   // новые сначала
+                )
+        );
     }
 
     @Transactional(readOnly = true)
@@ -68,6 +76,7 @@ public class OrderService {
     }
 
     @Transactional
+    @CacheEvict(value = "ordersByUser", allEntries = true)
     public void markOrderAsPurchased(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
@@ -77,6 +86,7 @@ public class OrderService {
     }
 
     @Transactional
+    @CacheEvict(value = "ordersByUser", allEntries = true)
     public void deleteOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
@@ -118,5 +128,12 @@ public class OrderService {
         List<VinylRecord> topVinyls = vinylRecordRepository.findAllById(topIds);
         topVinyls.sort(Comparator.comparingLong(v -> topIds.indexOf(v.getId())));
         return topVinyls;
+    }
+
+    @Transactional
+    public void markPurchased(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("Заказ не найден"));
+        order.setStatus(OrderStatus.PURCHASED);
     }
 }

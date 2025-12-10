@@ -2,7 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="ru">
-<head><meta charset="UTF-8"><title>Vinyl Store Home</title></head>
+<head>
+    <meta charset="UTF-8"><title>Vinyl Store Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
 <th:block th:replace="~{fragments/nav :: navBar}"></th:block>
 

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class VinylDTO {
 
     @NotNull(message = "Укажите дату выхода")
     @PastOrPresent(message = "Дата выхода не может быть в будущем")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
 
     @NotBlank(message = "Добавьте описание")

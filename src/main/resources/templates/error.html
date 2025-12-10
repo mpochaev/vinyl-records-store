@@ -1,6 +1,9 @@
 <!-- error.html -->
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head><meta charset="UTF-8"><title>Ошибка</title></head>
+<head>
+    <meta charset="UTF-8"><title>Ошибка</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
 <th:block th:replace="~{fragments/nav :: navBar}"></th:block>
 <h2>Произошла ошибка</h2>

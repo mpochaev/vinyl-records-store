@@ -50,6 +50,7 @@ public class AdminVinylController {
         VinylDTO vinylDTO = modelMapper.map(vinyl, VinylDTO.class);
         model.addAttribute("vinylDTO", vinylDTO);
         model.addAttribute("genres", Genre.values());
+        model.addAttribute("releaseDate", vinyl.getReleaseDate());
         model.addAttribute("lastSupply", vinyl.getLastSupplyDate());
         model.addAttribute("formAction", "/admin/vinyls/" + id);
         return "admin/vinyl-form";

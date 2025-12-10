@@ -1,10 +1,28 @@
 <!-- vinyl-details.html -->
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
-<head><meta charset="UTF-8"><title>Детали пластинки</title></head>
+<head>
+    <meta charset="UTF-8"><title>Детали пластинки</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
 <body>
 <th:block th:replace="~{fragments/nav :: navBar}"></th:block>
 
 <h2 th:text="${vinyl.title} + ' — ' + ${vinyl.artist}">Альбом – Исполнитель</h2>
+
+<div>
+    <!-- если фото нет или пустая строка -->
+    <img th:if="${#strings.isEmpty(vinyl.photo)}"
+         src="/img/placeholder.png"
+         alt="Обложка"
+         style="width:50px; height:auto;"/>
+
+    <!-- если фото есть -->
+    <img th:if="${!#strings.isEmpty(vinyl.photo)}"
+         th:src="@{/img/{file}(file=${vinyl.photo})}"
+         alt="Обложка"
+         style="width:50px; height:auto;"/>
+</div>
+
 <div>
     <p><b>Жанр:</b> <span th:text="${vinyl.genre}">Genre</span></p>
     <p><b>Дата выхода:</b> <span th:text="${#temporals.format(vinyl.releaseDate, 'dd.MM.yyyy')}">01.01.2000</span></p>
@@ -16,10 +34,16 @@
         <span th:if="${vinyl.quantity == 0}" style="color:red;">нет в наличии</span>
     </p>
 </div>
-<div>
+<div sec:authorize="hasRole('USER')"
+     xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <form th:action="@{'/order/' + ${vinyl.id}}" method="post">
         <button type="submit" th:disabled="${vinyl.quantity == 0}">Оформить заказ</button>
     </form>
+</div>
+
+<div sec:authorize="hasRole('ADMIN')"
+     xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <p><i>Администратор не может оформлять заказы.</i></p>
 </div>
 </body>
 </html>
