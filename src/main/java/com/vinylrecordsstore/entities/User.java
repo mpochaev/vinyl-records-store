@@ -2,9 +2,6 @@ package com.vinylrecordsstore.entities;
 
 import com.vinylrecordsstore.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,9 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Data // Генерирует сеттеры/геттеры
-@NoArgsConstructor // Генерирует пустой конструктор, JPA / Hibernate требуют конструктор без аргументов
-@AllArgsConstructor
 @ToString(exclude = "password") // Генерирует toString без пароля
 public class User implements UserDetails {
     @Id
@@ -78,5 +72,40 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public User() {
     }
 }

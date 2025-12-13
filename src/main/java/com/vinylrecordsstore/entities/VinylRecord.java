@@ -2,9 +2,6 @@ package com.vinylrecordsstore.entities;
 
 import com.vinylrecordsstore.enums.Genre;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,9 +11,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vinyl_records")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class VinylRecord implements Serializable { // Serializable - т.к. мы кэшируем в редисе
 
     // ID используемый при сериализации
@@ -55,4 +49,103 @@ public class VinylRecord implements Serializable { // Serializable - т.к. мы
     @Column
     private String photo;  // Путь к изображению в static/img
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setLastSupplyDate(LocalDateTime lastSupplyDate) {
+        this.lastSupplyDate = lastSupplyDate;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public LocalDateTime getLastSupplyDate() {
+        return lastSupplyDate;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public VinylRecord() {
+    }
+
+    public VinylRecord(Long id, String title, String artist,
+                       Genre genre, LocalDate releaseDate,
+                       String description, BigDecimal price,
+                       int quantity, LocalDateTime lastSupplyDate,
+                       String photo) {
+        this.id = id;
+        this.title = title;
+        this.artist = artist;
+        this.genre = genre;
+        this.releaseDate = releaseDate;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.lastSupplyDate = lastSupplyDate;
+        this.photo = photo;
+    }
 }

@@ -2,20 +2,14 @@ package com.vinylrecordsstore.entities;
 
 import com.vinylrecordsstore.enums.OrderStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "order_history")
-@NoArgsConstructor
-@AllArgsConstructor
 public class Order implements Serializable { // Serializable - т.к. мы кэшируем в редисе
 
     // ID используемый при сериализации
@@ -104,15 +98,20 @@ public class Order implements Serializable { // Serializable - т.к. мы кэ�
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return Objects.equals(id, order.id) && Objects.equals(user, order.user) && Objects.equals(vinyl, order.vinyl) && Objects.equals(totalPrice, order.totalPrice) && Objects.equals(orderDate, order.orderDate) && status == order.status;
+    public Order(Long id,
+                 User user,
+                 VinylRecord vinyl,
+                 BigDecimal totalPrice,
+                 LocalDateTime orderDate,
+                 OrderStatus status) {
+        this.id = id;
+        this.user = user;
+        this.vinyl = vinyl;
+        this.totalPrice = totalPrice;
+        this.orderDate = orderDate;
+        this.status = status;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, vinyl, totalPrice, orderDate, status);
+    public Order() {
     }
 }
