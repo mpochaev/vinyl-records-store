@@ -44,7 +44,7 @@ public class CatalogController {
             try {
                 genreEnum = Genre.valueOf(genre);
             } catch (IllegalArgumentException ignored) {
-                // невалидный жанр — оставляем null
+                // невалидный жанр - оставляем null
             }
         }
 
@@ -53,7 +53,7 @@ public class CatalogController {
             try {
                 min = new BigDecimal(minPrice);
             } catch (NumberFormatException ignored) {
-                // некорректное число — оставляем null
+                // некорректное число - оставляем null
             }
         }
 
@@ -62,7 +62,7 @@ public class CatalogController {
             try {
                 max = new BigDecimal(maxPrice);
             } catch (NumberFormatException ignored) {
-                // некорректное число — оставляем null
+                // некорректное число - оставляем null
             }
         }
 

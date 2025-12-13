@@ -7,7 +7,7 @@
 <body>
 <th:block th:replace="~{fragments/nav :: navBar}"></th:block>
 
-<h2 th:text="${vinyl.title} + ' — ' + ${vinyl.artist}">Альбом – Исполнитель</h2>
+<h2 th:text="${vinyl.title} + ' - ' + ${vinyl.artist}">Альбом – Исполнитель</h2>
 
 <div>
     <!-- если фото нет или пустая строка -->
@@ -34,6 +34,12 @@
         <span th:if="${vinyl.quantity == 0}" style="color:red;">нет в наличии</span>
     </p>
 </div>
+
+<div sec:authorize="isAnonymous()"
+     xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <p><i>Авторизуйтесь, чтобы оформить заказ.</i></p>
+</div>
+
 <div sec:authorize="hasRole('USER')"
      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <form th:action="@{'/order/' + ${vinyl.id}}" method="post">

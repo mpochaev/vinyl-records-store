@@ -63,7 +63,7 @@ public class VinylRecordService {
     }
 
     @Transactional
-    @CacheEvict(value = "catalogSearch", allEntries = true)
+    @CacheEvict(cacheNames = {"catalogSearch", "topVinyls"}, allEntries = true)
     public void addVinyl(VinylDTO vinylDTO) {
         VinylRecord vinyl = modelMapper.map(vinylDTO, VinylRecord.class);
         vinyl.setLastSupplyDate(LocalDateTime.now());
@@ -72,7 +72,7 @@ public class VinylRecordService {
     }
 
     @Transactional
-    @CacheEvict(value = "catalogSearch", allEntries = true)
+    @CacheEvict(cacheNames = {"catalogSearch", "topVinyls"}, allEntries = true)
     public void updateVinyl(Long id, VinylDTO vinylDTO) {
         VinylRecord existing = getById(id);
         int oldQuantity = existing.getQuantity();
@@ -84,6 +84,7 @@ public class VinylRecordService {
         existing.setDescription(vinylDTO.getDescription());
         existing.setPrice(vinylDTO.getPrice());
         existing.setQuantity(vinylDTO.getQuantity());
+        existing.setPhoto(vinylDTO.getPhoto());
 
         if (existing.getQuantity() != oldQuantity) {
             existing.setLastSupplyDate(LocalDateTime.now());

@@ -16,14 +16,44 @@
 
 <div>
     <h3>Топ-10 самых продаваемых пластинок:</h3>
-    <ol>
-        <li th:each="v : ${topVinyls}">
-            <a th:href="@{'/vinyl/' + ${v.id}}">
-                <span th:text="${v.title}">Альбом</span> – <span th:text="${v.artist}">Исполнитель</span>
-            </a>
-        </li>
-        <li th:if="${#lists.isEmpty(topVinyls)}">Нет данных.</li>
-    </ol>
+
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th>Альбом</th>
+            <th>Исполнитель</th>
+            <th>Продано</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vinyl : ${topVinyls}">
+            <td>
+            <span th:if="${vinyl.photo == null or vinyl.photo.isEmpty()}">
+                <img th:src="@{/img/placeholder.png}" alt="No image" width="50"/>
+            </span>
+                <span th:if="${vinyl.photo != null and !vinyl.photo.isEmpty()}">
+                <img th:src="@{/img/{file}(file=${vinyl.photo})}" alt="Фото" width="50"/>
+            </span>
+            </td>
+
+            <td>
+                <a th:href="@{'/vinyl/' + ${vinyl.id}}">
+                    <span th:text="${vinyl.title}">Альбом</span>
+                </a>
+            </td>
+
+            <td th:text="${vinyl.artist}">Исполнитель</td>
+
+            <td th:text="${topSoldMap[vinyl.id] == null ? 0 : topSoldMap[vinyl.id]}">0</td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(topVinyls)}">
+            <td colspan="4">Нет данных.</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+
 </body>
 </html>

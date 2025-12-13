@@ -4,7 +4,6 @@ import com.vinylrecordsstore.entities.Order;
 import com.vinylrecordsstore.entities.User;
 import com.vinylrecordsstore.entities.VinylRecord;
 import com.vinylrecordsstore.enums.OrderStatus;
-import com.vinylrecordsstore.exceptions.NotFoundException;
 import com.vinylrecordsstore.repositories.OrderRepository;
 import com.vinylrecordsstore.repositories.VinylRecordRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,9 @@ import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -115,25 +116,30 @@ public class OrderService {
         log.info("Deleted {} orders of user {}", orders.size(), user.getLogin());
     }
 
-    @Cacheable(value = "topVinyls")
+    public Map<Long, Long> getSoldMapByVinylIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) return Map.of();
+
+        List<Object[]> rows = orderRepository.countSoldByVinylIds(ids, OrderStatus.PURCHASED);
+
+        Map<Long, Long> map = new HashMap<>();
+        for (Object[] r : rows) {
+            Long vinylId = ((Number) r[0]).longValue();
+            Long sold    = ((Number) r[1]).longValue(); // COUNT может вернуться как Long/BigInteger
+            map.put(vinylId, sold);
+        }
+        return map;
+    }
+
+    @Cacheable("topVinyls")
     public List<VinylRecord> getTopSellingVinyls() {
         List<Long> topIds = orderRepository
                 .findTopSellingVinylIds(PageRequest.of(0, 10))
                 .getContent();
 
-        if (topIds.isEmpty()) {
-            return List.of();
-        }
+        if (topIds.isEmpty()) return List.of();
 
         List<VinylRecord> topVinyls = vinylRecordRepository.findAllById(topIds);
         topVinyls.sort(Comparator.comparingLong(v -> topIds.indexOf(v.getId())));
         return topVinyls;
-    }
-
-    @Transactional
-    public void markPurchased(Long orderId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new NotFoundException("Заказ не найден"));
-        order.setStatus(OrderStatus.PURCHASED);
     }
 }

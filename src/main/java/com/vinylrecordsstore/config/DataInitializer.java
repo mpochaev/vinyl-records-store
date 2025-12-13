@@ -73,7 +73,7 @@ public class DataInitializer implements CommandLineRunner {
         List<VinylRecord> vinylRecords = new ArrayList<>();
         vinylRecords.add(new VinylRecord(null, "Thriller", "Michael Jackson", Genre.COUNTRY, LocalDate.of(2019, 3, 3), "COUNTRY music album by Michael Jackson, released in 2019.", new BigDecimal("40.65"), 2, null, "album1.png"));
         vinylRecords.add(new VinylRecord(null, "Kind of Blue", "Miles Davis", Genre.BLUES, LocalDate.of(1979, 2, 3), "BLUES music album by Miles Davis, released in 1979.", new BigDecimal("20.77"), 3, null, "album2.jpg"));
-        vinylRecords.add(new VinylRecord(null, "Bitches Brew", "Miles Davis", Genre.HIPHOP, LocalDate.of(2007, 1, 15), "HIPHOP music album by Miles Davis, released in 2007.", new BigDecimal("22.75"), 17, null, "album3.jpg"));
+        vinylRecords.add(new VinylRecord(null, "B*tches Brew", "Miles Davis", Genre.HIPHOP, LocalDate.of(2007, 1, 15), "HIPHOP music album by Miles Davis, released in 2007.", new BigDecimal("22.75"), 17, null, "album3.jpg"));
         vinylRecords.add(new VinylRecord(null, "Symphony No. 5", "Beethoven", Genre.JAZZ, LocalDate.of(1961, 9, 7), "JAZZ music album by Beethoven, released in 1961.", new BigDecimal("39.10"), 11, null, "album4.jpg"));
         vinylRecords.add(new VinylRecord(null, "1989", "Taylor Swift", Genre.JAZZ, LocalDate.of(1998, 3, 10), "JAZZ music album by Taylor Swift, released in 1998.", new BigDecimal("39.59"), 15, null, "album5.jpg"));
         vinylRecords.add(new VinylRecord(null, "Fearless", "Taylor Swift", Genre.JAZZ, LocalDate.of(1984, 5, 24), "JAZZ music album by Taylor Swift, released in 1984.", new BigDecimal("19.56"), 15, null, "album6.png"));

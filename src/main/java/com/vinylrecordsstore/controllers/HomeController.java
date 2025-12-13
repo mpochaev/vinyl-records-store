@@ -24,6 +24,8 @@ public class HomeController {
         // Топ-10 продающихся виниловых пластинок
         List<VinylRecord> topVinyls = orderService.getTopSellingVinyls();
         model.addAttribute("topVinyls", topVinyls);
+        List<Long> ids = topVinyls.stream().map(VinylRecord::getId).toList();
+        model.addAttribute("topSoldMap", orderService.getSoldMapByVinylIds(ids));
         return "home";
     }
 

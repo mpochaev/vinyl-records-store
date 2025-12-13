@@ -54,4 +54,5 @@ public class VinylRecord implements Serializable { // Serializable - т.к. мы
 
     @Column
     private String photo;  // Путь к изображению в static/img
+
 }
