@@ -25,7 +25,7 @@ public class AdminOrderController {
     }
 
     @PostMapping("/{orderId}/mark")
-    public String markOrderPurchased(@PathVariable Long orderId,
+    public String markOrderPurchased(@PathVariable String orderId,
                                      @RequestParam(required = false) Integer page) {
         orderService.markOrderAsPurchased(orderId);
         int currentPage = page != null ? page : 0;
@@ -33,7 +33,7 @@ public class AdminOrderController {
     }
 
     @PostMapping("/{orderId}")
-    public String deleteOrder(@PathVariable Long orderId,
+    public String deleteOrder(@PathVariable String orderId,
                               @RequestParam(required = false) Integer page) {
         orderService.deleteOrder(orderId);
         int currentPage = page != null ? page : 0;

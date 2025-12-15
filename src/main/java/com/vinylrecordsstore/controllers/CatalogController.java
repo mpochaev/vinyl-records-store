@@ -22,7 +22,7 @@ public class CatalogController {
     private final VinylRecordService vinylRecordService;
 
     @GetMapping("/vinyl/{id}")
-    public String vinylDetails(@PathVariable Long id, Model model) {
+    public String vinylDetails(@PathVariable String id, Model model) {
         VinylRecord vinyl = vinylRecordService.getById(id);
         model.addAttribute("vinyl", vinyl);
         return "vinyl-details";

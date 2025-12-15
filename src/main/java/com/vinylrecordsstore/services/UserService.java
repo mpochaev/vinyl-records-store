@@ -49,7 +49,7 @@ public class UserService {
 
     @Transactional
     @CacheEvict(value = "ordersByUser", allEntries = true)
-    public void deleteUser(Long userId) {
+    public void deleteUser(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

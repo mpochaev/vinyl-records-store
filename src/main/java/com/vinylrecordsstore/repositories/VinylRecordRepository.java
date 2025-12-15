@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
 
-public interface VinylRecordRepository extends JpaRepository<VinylRecord, Long> {
+public interface VinylRecordRepository extends JpaRepository<VinylRecord, String> {
 
     @Query("""
             SELECT v FROM VinylRecord v

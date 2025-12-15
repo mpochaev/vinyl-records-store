@@ -14,10 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @ToString(exclude = "password") // Генерирует toString без пароля
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // БД генерирует id
-    private Long id;
+public class User extends BaseEntity implements UserDetails {
 
     @Column(nullable = false, unique = true)
     private String login;
@@ -74,10 +71,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setLogin(String login) {
         this.login = login;
     }
@@ -92,10 +85,6 @@ public class User implements UserDetails {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getLogin() {

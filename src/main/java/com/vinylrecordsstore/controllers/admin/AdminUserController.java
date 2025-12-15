@@ -34,7 +34,7 @@ public class AdminUserController {
     }
 
     @PostMapping("/{id}")
-    public String deleteCustomer(@PathVariable Long id,
+    public String deleteCustomer(@PathVariable String id,
                                  @RequestParam(required = false) Integer page) {
 
         userService.deleteUser(id);

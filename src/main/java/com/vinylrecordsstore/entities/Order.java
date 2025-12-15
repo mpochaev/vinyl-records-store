@@ -10,15 +10,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "order_history")
-public class Order implements Serializable { // Serializable - т.к. мы кэшируем в редисе
+public class Order extends BaseEntity implements Serializable { // Serializable - т.к. мы кэшируем в редисе
 
     // ID используемый при сериализации
     @Serial
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @ManyToOne(optional = false) // У заказа обязательно есть User
     @JoinColumn(name = "user_id")
@@ -37,14 +33,6 @@ public class Order implements Serializable { // Serializable - т.к. мы кэ�
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public User getUser() {
         return user;
@@ -89,7 +77,7 @@ public class Order implements Serializable { // Serializable - т.к. мы кэ�
     @Override
     public String toString() {
         return "Order{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", user=" + user +
                 ", vinyl=" + vinyl +
                 ", totalPrice=" + totalPrice +
@@ -98,13 +86,13 @@ public class Order implements Serializable { // Serializable - т.к. мы кэ�
                 '}';
     }
 
-    public Order(Long id,
+    public Order(String id,
                  User user,
                  VinylRecord vinyl,
                  BigDecimal totalPrice,
                  LocalDateTime orderDate,
                  OrderStatus status) {
-        this.id = id;
+        setId(id);
         this.user = user;
         this.vinyl = vinyl;
         this.totalPrice = totalPrice;

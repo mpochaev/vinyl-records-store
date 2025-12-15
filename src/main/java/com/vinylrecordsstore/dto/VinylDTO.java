@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 @Data
 public class VinylDTO {
-    private Long id;
+    private String id;
 
     @NotBlank(message = "Название обязательно")
     private String title;

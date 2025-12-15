@@ -27,7 +27,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        // имена полей в форме логина
+                        // Имена полей в форме логина
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/", true)
@@ -42,7 +42,6 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .rememberMe(remember -> remember
-                        // как в project: key + срок жизни + свой параметр
                         .key("uniqueAndSecret")                 // в бою вынести в конфиг
                         .tokenValiditySeconds(86400 * 7)        // 7 дней
                         .rememberMeParameter("remember-me")     // name у checkbox в форме

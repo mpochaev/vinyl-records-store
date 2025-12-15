@@ -11,15 +11,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vinyl_records")
-public class VinylRecord implements Serializable { // Serializable - т.к. мы кэшируем в редисе
+public class VinylRecord extends BaseEntity implements Serializable { // Serializable - т.к. мы кэшируем в редисе
 
     // ID используемый при сериализации
     @Serial
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -48,10 +44,6 @@ public class VinylRecord implements Serializable { // Serializable - т.к. мы
 
     @Column
     private String photo;  // Путь к изображению в static/img
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -87,10 +79,6 @@ public class VinylRecord implements Serializable { // Serializable - т.к. мы
 
     public void setPhoto(String photo) {
         this.photo = photo;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getTitle() {
@@ -132,12 +120,12 @@ public class VinylRecord implements Serializable { // Serializable - т.к. мы
     public VinylRecord() {
     }
 
-    public VinylRecord(Long id, String title, String artist,
+    public VinylRecord(String id, String title, String artist,
                        Genre genre, LocalDate releaseDate,
                        String description, BigDecimal price,
                        int quantity, LocalDateTime lastSupplyDate,
                        String photo) {
-        this.id = id;
+        setId(id);
         this.title = title;
         this.artist = artist;
         this.genre = genre;

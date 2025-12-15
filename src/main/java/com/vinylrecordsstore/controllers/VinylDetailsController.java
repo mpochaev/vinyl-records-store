@@ -17,7 +17,7 @@ public class VinylDetailsController {
     }
 
     @GetMapping("/vinyl/{id}")
-    public String getVinyl(@PathVariable Long id, Model model) {
+    public String getVinyl(@PathVariable String id, Model model) {
         VinylRecord vinyl = vinylRecordService.getById(id);
         if (vinyl == null) {
             // можно кинуть своё исключение, которое перехватит GlobalExceptionHandler

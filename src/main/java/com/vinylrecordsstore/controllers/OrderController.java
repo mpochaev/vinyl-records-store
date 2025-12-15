@@ -20,7 +20,7 @@ public class OrderController {
 
     @PostMapping("/order/{vinylId}")
     public String placeOrder(@AuthenticationPrincipal User currentUser,
-                             @PathVariable Long vinylId) {
+                             @PathVariable String vinylId) {
 
         if (currentUser == null) {
             return "redirect:/login";

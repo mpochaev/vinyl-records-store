@@ -34,7 +34,7 @@ public class OrderService {
      * Оформление заказа пользователем
      */
     @Transactional
-    @CacheEvict(value = "ordersByUser", key = "#user.id")
+    @CacheEvict(value = {"ordersByUser", "catalogSearch"}, allEntries = true)
     public void placeOrder(User user, VinylRecord vinyl) {
         if (vinyl.getQuantity() <= 0) {
             throw new RuntimeException("Товара нет в наличии");
@@ -78,7 +78,7 @@ public class OrderService {
 
     @Transactional
     @CacheEvict(value = "ordersByUser", allEntries = true)
-    public void markOrderAsPurchased(Long orderId) {
+    public void markOrderAsPurchased(String orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(OrderStatus.PURCHASED);
@@ -88,7 +88,7 @@ public class OrderService {
 
     @Transactional
     @CacheEvict(value = "ordersByUser", allEntries = true)
-    public void deleteOrder(Long orderId) {
+    public void deleteOrder(String orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
@@ -116,15 +116,15 @@ public class OrderService {
         log.info("Deleted {} orders of user {}", orders.size(), user.getLogin());
     }
 
-    public Map<Long, Long> getSoldMapByVinylIds(List<Long> ids) {
+    public Map<String, Long> getSoldMapByVinylIds(List<String> ids) {
         if (ids == null || ids.isEmpty()) return Map.of();
 
         List<Object[]> rows = orderRepository.countSoldByVinylIds(ids, OrderStatus.PURCHASED);
 
-        Map<Long, Long> map = new HashMap<>();
+        Map<String, Long> map = new HashMap<>();
         for (Object[] r : rows) {
-            Long vinylId = ((Number) r[0]).longValue();
-            Long sold    = ((Number) r[1]).longValue(); // COUNT может вернуться как Long/BigInteger
+            String vinylId = r[0].toString();
+            Long sold = ((Number) r[1]).longValue();
             map.put(vinylId, sold);
         }
         return map;
@@ -132,14 +132,14 @@ public class OrderService {
 
     @Cacheable("topVinyls")
     public List<VinylRecord> getTopSellingVinyls() {
-        List<Long> topIds = orderRepository
+        List<String> topIds = orderRepository
                 .findTopSellingVinylIds(PageRequest.of(0, 10))
                 .getContent();
 
         if (topIds.isEmpty()) return List.of();
 
         List<VinylRecord> topVinyls = vinylRecordRepository.findAllById(topIds);
-        topVinyls.sort(Comparator.comparingLong(v -> topIds.indexOf(v.getId())));
+        topVinyls.sort(Comparator.comparingInt(v -> topIds.indexOf(v.getId())));
         return topVinyls;
     }
 }

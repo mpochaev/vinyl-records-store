@@ -45,7 +45,7 @@ public class AdminVinylController {
     }
 
     @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    public String showEditForm(@PathVariable String id, Model model) {
         VinylRecord vinyl = vinylRecordService.getById(id);
         VinylDTO vinylDTO = modelMapper.map(vinyl, VinylDTO.class);
         model.addAttribute("vinylDTO", vinylDTO);
@@ -57,7 +57,7 @@ public class AdminVinylController {
     }
 
     @PutMapping("/{id}")
-    public String updateVinyl(@PathVariable Long id,
+    public String updateVinyl(@PathVariable String id,
                               @Valid @ModelAttribute("vinylDTO") VinylDTO vinylDTO,
                               BindingResult bindingResult,
                               Model model) {
@@ -79,7 +79,7 @@ public class AdminVinylController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteVinyl(@PathVariable Long id,
+    public String deleteVinyl(@PathVariable String id,
                               @RequestParam(required = false) Integer page) {
         vinylRecordService.deleteById(id);
         int currentPage = page != null ? page : 0;

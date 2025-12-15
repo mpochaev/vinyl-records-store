@@ -57,7 +57,7 @@ public class VinylRecordService {
     }
 
     @Transactional(readOnly = true)
-    public VinylRecord getById(Long id) {
+    public VinylRecord getById(String id) {
         return vinylRecordRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Vinyl not found: " + id));
     }
@@ -73,7 +73,7 @@ public class VinylRecordService {
 
     @Transactional
     @CacheEvict(cacheNames = {"catalogSearch", "topVinyls"}, allEntries = true)
-    public void updateVinyl(Long id, VinylDTO vinylDTO) {
+    public void updateVinyl(String id, VinylDTO vinylDTO) {
         VinylRecord existing = getById(id);
         int oldQuantity = existing.getQuantity();
 
@@ -96,7 +96,7 @@ public class VinylRecordService {
 
     @Transactional
     @CacheEvict(value = {"catalogSearch", "topVinyls"}, allEntries = true)
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         vinylRecordRepository.deleteById(id);
     }
 }
