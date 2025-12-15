@@ -16,13 +16,10 @@ public class VinylDetailsController {
         this.vinylRecordService = vinylRecordService;
     }
 
+    // Страница отдельной пластинки
     @GetMapping("/vinyl/{id}")
     public String getVinyl(@PathVariable String id, Model model) {
         VinylRecord vinyl = vinylRecordService.getById(id);
-        if (vinyl == null) {
-            // можно кинуть своё исключение, которое перехватит GlobalExceptionHandler
-            throw new RuntimeException("Пластинка не найдена");
-        }
         model.addAttribute("vinyl", vinyl);
         return "vinyl-details";
     }

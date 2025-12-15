@@ -3,12 +3,14 @@ package com.vinylrecordsstore.services;
 import com.vinylrecordsstore.dto.UserDTO;
 import com.vinylrecordsstore.entities.User;
 import com.vinylrecordsstore.enums.Role;
+import com.vinylrecordsstore.exceptions.NotFoundException;
 import com.vinylrecordsstore.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +53,7 @@ public class UserService {
     @CacheEvict(value = "ordersByUser", allEntries = true)
     public void deleteUser(String userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден: " + userId));
 
         // Удалить все заказы этого пользователя
         orderService.deleteOrdersByUser(user);
@@ -66,6 +68,6 @@ public class UserService {
     public UserDetails getUserByLoginOrEmail(String loginOrEmail) {
         return userRepository
                 .findByLoginIgnoreCaseOrEmailIgnoreCase(loginOrEmail, loginOrEmail)
-                .orElseThrow(() -> new RuntimeException("User not found: " + loginOrEmail));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + loginOrEmail));
     }
 }

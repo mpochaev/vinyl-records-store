@@ -4,6 +4,7 @@ import com.vinylrecordsstore.entities.Order;
 import com.vinylrecordsstore.entities.User;
 import com.vinylrecordsstore.entities.VinylRecord;
 import com.vinylrecordsstore.enums.OrderStatus;
+import com.vinylrecordsstore.exceptions.NotFoundException;
 import com.vinylrecordsstore.repositories.OrderRepository;
 import com.vinylrecordsstore.repositories.VinylRecordRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class OrderService {
     @CacheEvict(value = {"ordersByUser", "catalogSearch"}, allEntries = true)
     public void placeOrder(User user, VinylRecord vinyl) {
         if (vinyl.getQuantity() <= 0) {
-            throw new RuntimeException("Товара нет в наличии");
+            throw new IllegalArgumentException("Товара нет в наличии");
         }
 
         // Уменьшаем количество на складе
@@ -80,7 +81,7 @@ public class OrderService {
     @CacheEvict(value = "ordersByUser", allEntries = true)
     public void markOrderAsPurchased(String orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new NotFoundException("Заказ не найден: " + orderId));
         order.setStatus(OrderStatus.PURCHASED);
         orderRepository.save(order);
         log.info("Order {} marked as PURCHASED", orderId);
@@ -90,7 +91,7 @@ public class OrderService {
     @CacheEvict(value = "ordersByUser", allEntries = true)
     public void deleteOrder(String orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new NotFoundException("Заказ не найден: " + orderId));
 
         if (order.getStatus() != OrderStatus.CANCELLED) {
             VinylRecord vinyl = order.getVinyl();
@@ -130,7 +131,6 @@ public class OrderService {
         return map;
     }
 
-    @Cacheable("topVinyls")
     public List<VinylRecord> getTopSellingVinyls() {
         List<String> topIds = orderRepository
                 .findTopSellingVinylIds(PageRequest.of(0, 10))

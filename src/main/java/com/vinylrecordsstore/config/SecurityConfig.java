@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/account/**", "/orders/**", "/order/**").authenticated()
+                        // Все остальные страницы доступны всем
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
